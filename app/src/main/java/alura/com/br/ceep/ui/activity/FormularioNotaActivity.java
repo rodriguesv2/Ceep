@@ -31,10 +31,7 @@ public class FormularioNotaActivity extends AppCompatActivity {
         setTitle("Insere nota");
 
         inicializaCampos();
-
-        RecyclerView selecaoDeCor = findViewById(R.id.formulario_nota_selecao_cor);
-        selecaoDeCor.setAdapter(new ListaCoresAdapter(this));
-
+        configuraRecyclerView();
 
         Intent dadosRecebidos = getIntent();
         if (dadosRecebidos.hasExtra(CHAVE_NOTA)){
@@ -46,14 +43,19 @@ public class FormularioNotaActivity extends AppCompatActivity {
         }
     }
 
-    private void preencheCampos(Nota notaRecebida) {
-        titulo.setText(notaRecebida.getTitulo());
-        descricao.setText(notaRecebida.getDescricao());
-    }
-
     private void inicializaCampos() {
         titulo = findViewById(R.id.formulario_nota_titulo);
         descricao = findViewById(R.id.formulario_nota_descricao);
+    }
+
+    private void configuraRecyclerView() {
+        RecyclerView selecaoDeCor = findViewById(R.id.formulario_nota_selecao_cor);
+        selecaoDeCor.setAdapter(new ListaCoresAdapter(this));
+    }
+
+    private void preencheCampos(Nota notaRecebida) {
+        titulo.setText(notaRecebida.getTitulo());
+        descricao.setText(notaRecebida.getDescricao());
     }
 
     @Override

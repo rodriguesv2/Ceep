@@ -56,4 +56,9 @@ public class ListaCoresAdapter extends RecyclerView.Adapter<ListaCoresAdapter.Co
                         PorterDuff.Mode.MULTIPLY);
         }
     }
+
+    public interface OnItemClickListener{
+
+        void onItemClick();
+    }
 }
