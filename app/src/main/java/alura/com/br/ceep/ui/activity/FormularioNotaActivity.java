@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import alura.com.br.ceep.R;
 import alura.com.br.ceep.model.Nota;
+import alura.com.br.ceep.ui.recyclerview.adapter.ListaCoresAdapter;
 
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_NOTA;
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_POSICAO;
@@ -29,6 +31,10 @@ public class FormularioNotaActivity extends AppCompatActivity {
         setTitle("Insere nota");
 
         inicializaCampos();
+
+        RecyclerView selecaoDeCor = findViewById(R.id.formulario_nota_selecao_cor);
+        selecaoDeCor.setAdapter(new ListaCoresAdapter(this));
+
 
         Intent dadosRecebidos = getIntent();
         if (dadosRecebidos.hasExtra(CHAVE_NOTA)){

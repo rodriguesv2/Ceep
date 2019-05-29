@@ -97,7 +97,6 @@ public class ListaNotasActivity extends AppCompatActivity {
                 StaggeredGridLayoutManager.VERTICAL));
         item.setIcon(R.drawable.ic_action_lista_linear);
     }
-
     //<-- Fim da configuração do item menu de seleção de tipo de RecycleView
 
     private void configuraBotaoInsereNota() {
@@ -193,11 +192,6 @@ public class ListaNotasActivity extends AppCompatActivity {
         configuraItemTouchHelper(listaNotas);
     }
 
-    private void configuraItemTouchHelper(RecyclerView listaNotas) {
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter));
-        itemTouchHelper.attachToRecyclerView(listaNotas);
-    }
-
     private void configuraAdapter(List<Nota> todasNotas, RecyclerView listaNotas) {
         adapter = new ListaNotasAdapter(this, todasNotas);
         listaNotas.setAdapter(adapter);
@@ -207,6 +201,11 @@ public class ListaNotasActivity extends AppCompatActivity {
                 vaiParaFormularioNotaActivityAltera(nota, posicao);
             }
         });
+    }
+
+    private void configuraItemTouchHelper(RecyclerView listaNotas) {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter));
+        itemTouchHelper.attachToRecyclerView(listaNotas);
     }
 
     private void vaiParaFormularioNotaActivityAltera(Nota nota, int posicao) {
