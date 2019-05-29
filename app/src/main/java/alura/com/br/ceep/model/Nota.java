@@ -2,15 +2,21 @@ package alura.com.br.ceep.model;
 
 import java.io.Serializable;
 
+import alura.com.br.ceep.ui.recyclerview.adapter.util.Cor;
+
 public class Nota implements Serializable {
 
-    private final String titulo;
-    private final String descricao;
+    private String titulo;
+    private String descricao;
+    private Cor cor;
 
-    public Nota(String titulo, String descricao) {
+    public Nota(String titulo, String descricao, Cor cor) {
         this.titulo = titulo;
         this.descricao = descricao;
+        this.cor = cor;
     }
+
+    public Nota(){}
 
     public String getTitulo() {
         return titulo;
@@ -20,4 +26,11 @@ public class Nota implements Serializable {
         return descricao;
     }
 
+    public Cor getCor() {
+        return cor;
+    }
+
+    public void setCor(Cor cor) {
+        this.cor = cor;
+    }
 }

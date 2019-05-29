@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import alura.com.br.ceep.R;
 import alura.com.br.ceep.model.Nota;
@@ -22,12 +23,13 @@ import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.POSICAO_INVA
 
 public class FormularioNotaActivity extends AppCompatActivity {
 
-
     private int posicaoRecebida = POSICAO_INVALIDA;
     private TextView titulo;
     private TextView descricao;
     private RecyclerView selecaoDeCor;
     private ConstraintLayout fundo;
+    private Nota notaRecebida;
+    private Cor cor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +43,21 @@ public class FormularioNotaActivity extends AppCompatActivity {
         Intent dadosRecebidos = getIntent();
         if (dadosRecebidos.hasExtra(CHAVE_NOTA)){
             setTitle("Altera nota");
-            Nota notaRecebida = (Nota) dadosRecebidos.getSerializableExtra(CHAVE_NOTA);
+            notaRecebida = (Nota) dadosRecebidos.getSerializableExtra(CHAVE_NOTA);
             posicaoRecebida = dadosRecebidos.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
 
-            preencheCampos(notaRecebida);
+            Cor corDaNotaRecebida = notaRecebida.getCor();
+            if (corDaNotaRecebida.getCorSelecionada() != Cor.BRANCO){
+                mudarCorDeFundo(corDaNotaRecebida);
+                this.cor = corDaNotaRecebida;
+            } else {
+                this.cor = new Cor(Cor.BRANCO);
+            }
+
+            preencheCampos();
+        } else {
+            notaRecebida = new Nota();
+            cor = new Cor(Cor.BRANCO);
         }
     }
 
@@ -65,13 +78,18 @@ public class FormularioNotaActivity extends AppCompatActivity {
     private void acaoDeCliqueNosBotoesDeCor(ListaCoresAdapter adapter) {
         adapter.setOnItemClickListener(new ListaCoresAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Cor cor) {
-                fundo.setBackgroundColor(Color.parseColor(cor.getCorSelecionada()));
+            public void onItemClick(Cor corClicada) {
+                cor = corClicada;
+                mudarCorDeFundo(cor);
             }
         });
     }
 
-    private void preencheCampos(Nota notaRecebida) {
+    private void mudarCorDeFundo(Cor cor) {
+        fundo.setBackgroundColor(Color.parseColor(cor.getCorSelecionada()));
+    }
+
+    private void preencheCampos() {
         titulo.setText(notaRecebida.getTitulo());
         descricao.setText(notaRecebida.getDescricao());
     }
@@ -87,9 +105,18 @@ public class FormularioNotaActivity extends AppCompatActivity {
         if(ehMenuSalvaNota(item)){
             Nota notaCriada = criaNota();
             retornaNota(notaCriada);
+            Toast.makeText(this, notaCriada.getCor().getCorSelecionada(), Toast.LENGTH_SHORT).show();
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean ehMenuSalvaNota(MenuItem item) {
+        return item.getItemId() == R.id.menu_formulario_nota_ic_salva;
+    }
+
+    private Nota criaNota() {
+        return new Nota(titulo.getText().toString(), descricao.getText().toString(), cor);
     }
 
     private void retornaNota(Nota nota) {
@@ -97,13 +124,5 @@ public class FormularioNotaActivity extends AppCompatActivity {
         resultadoInsercao.putExtra(CHAVE_NOTA, nota);
         resultadoInsercao.putExtra(CHAVE_POSICAO, posicaoRecebida);
         setResult(Activity.RESULT_OK, resultadoInsercao);
-    }
-
-    private Nota criaNota() {
-        return new Nota(titulo.getText().toString(), descricao.getText().toString());
-    }
-
-    private boolean ehMenuSalvaNota(MenuItem item) {
-        return item.getItemId() == R.id.menu_formulario_nota_ic_salva;
     }
 }

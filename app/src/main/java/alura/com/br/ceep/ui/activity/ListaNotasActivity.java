@@ -25,6 +25,7 @@ import alura.com.br.ceep.preferences.RecycleViewLayoutPreferences;
 import alura.com.br.ceep.preferences.TipoRecycleViewPreferences;
 import alura.com.br.ceep.recyclerview.helper.callback.NotaItemTouchHelperCallback;
 import alura.com.br.ceep.ui.recyclerview.adapter.ListaNotasAdapter;
+import alura.com.br.ceep.ui.recyclerview.adapter.util.Cor;
 
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_NOTA;
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_POSICAO;
@@ -117,7 +118,7 @@ public class ListaNotasActivity extends AppCompatActivity {
         NotaDAO dao = new NotaDAO();
 
         for (int i = 1; i <= 10; i++){
-            dao.insere(new Nota(i + "º titulo", i + "ª descrição"));
+            dao.insere(new Nota(i + "º titulo", i + "ª descrição", new Cor("#FFFFFF")));
         }
         return dao.todos();
     }
