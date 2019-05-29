@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,8 @@ import java.util.List;
 import alura.com.br.ceep.R;
 import alura.com.br.ceep.dao.NotaDAO;
 import alura.com.br.ceep.model.Nota;
+import alura.com.br.ceep.preferences.RecycleViewLayoutPreferences;
+import alura.com.br.ceep.preferences.TipoRecycleViewPreferences;
 import alura.com.br.ceep.recyclerview.helper.callback.NotaItemTouchHelperCallback;
 import alura.com.br.ceep.ui.recyclerview.adapter.ListaNotasAdapter;
 import alura.com.br.ceep.ui.recyclerview.adapter.listener.OnItemClickListener;
@@ -33,7 +36,6 @@ import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.POSICAO_INVA
 public class ListaNotasActivity extends AppCompatActivity {
 
     private ListaNotasAdapter adapter;
-    private int contador = 0;
     private RecyclerView listaNotas;
 
     @Override
@@ -48,6 +50,7 @@ public class ListaNotasActivity extends AppCompatActivity {
         configuraBotaoInsereNota();
     }
 
+    //<-- Inicio da configuração do item menu de seleção de tipo de RecycleView
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_lista_notas_layout, menu);
@@ -57,15 +60,12 @@ public class ListaNotasActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_lista_notas_layout_item){
-            if (contador == 0) {
-                item.setIcon(R.drawable.ic_action_lista_linear);
-                listaNotas.setLayoutManager(new StaggeredGridLayoutManager(3,
-                        StaggeredGridLayoutManager.VERTICAL));
-                contador = 1;
+            if (!ehPreferenciaLinear()){
+                setaLayoutLinear(item);
+                RecycleViewLayoutPreferences.inserePreferencia(TipoRecycleViewPreferences.LINEAR, this);
             } else {
-                item.setIcon(R.drawable.ic_action_lista_grid);
-                listaNotas.setLayoutManager(new LinearLayoutManager(this));
-                contador = 0;
+                setaLayoutGrid(item);
+                RecycleViewLayoutPreferences.inserePreferencia(TipoRecycleViewPreferences.GRID, this);
             }
         }
         return super.onOptionsItemSelected(item);
@@ -73,9 +73,32 @@ public class ListaNotasActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        //menu.getItem(0).setIcon(R.drawable.ic_action_lista_linear);
+        if (RecycleViewLayoutPreferences.contemChave(this)){
+            if (ehPreferenciaLinear()){
+                setaLayoutLinear(menu.getItem(0));
+            } else {
+                setaLayoutGrid(menu.getItem(0));
+            }
+        }
         return super.onPrepareOptionsMenu(menu);
     }
+
+    private boolean ehPreferenciaLinear() {
+        return RecycleViewLayoutPreferences.pegaPreferencia(this) == TipoRecycleViewPreferences.LINEAR;
+    }
+
+    private void setaLayoutLinear(MenuItem item) {
+        listaNotas.setLayoutManager(new LinearLayoutManager(this));
+        item.setIcon(R.drawable.ic_action_lista_grid);
+    }
+
+    private void setaLayoutGrid(MenuItem item) {
+        listaNotas.setLayoutManager(new StaggeredGridLayoutManager(3,
+                StaggeredGridLayoutManager.VERTICAL));
+        item.setIcon(R.drawable.ic_action_lista_linear);
+    }
+
+    //<-- Fim da configuração do item menu de seleção de tipo de RecycleView
 
     private void configuraBotaoInsereNota() {
         TextView botaoInsereNota = findViewById(R.id.lista_notas_insere_nota);
