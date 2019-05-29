@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +33,8 @@ import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.POSICAO_INVA
 public class ListaNotasActivity extends AppCompatActivity {
 
     private ListaNotasAdapter adapter;
+    private int contador = 0;
+    private RecyclerView listaNotas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +56,25 @@ public class ListaNotasActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_lista_notas_layout)
-            Toast.makeText(this, "Teste maroto", Toast.LENGTH_SHORT).show();
+        if (item.getItemId() == R.id.menu_lista_notas_layout_item){
+            if (contador == 0) {
+                item.setIcon(R.drawable.ic_action_lista_linear);
+                listaNotas.setLayoutManager(new StaggeredGridLayoutManager(3,
+                        StaggeredGridLayoutManager.VERTICAL));
+                contador = 1;
+            } else {
+                item.setIcon(R.drawable.ic_action_lista_grid);
+                listaNotas.setLayoutManager(new LinearLayoutManager(this));
+                contador = 0;
+            }
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        //menu.getItem(0).setIcon(R.drawable.ic_action_lista_linear);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     private void configuraBotaoInsereNota() {
@@ -145,7 +165,7 @@ public class ListaNotasActivity extends AppCompatActivity {
     }
 
     private void configuraRecyclerView(List<Nota> todasNotas) {
-        RecyclerView listaNotas = findViewById(R.id.lista_notas_recyclerview);
+        listaNotas = findViewById(R.id.lista_notas_recyclerview);
         configuraAdapter(todasNotas, listaNotas);
         configuraItemTouchHelper(listaNotas);
     }
