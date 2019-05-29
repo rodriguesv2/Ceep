@@ -19,9 +19,15 @@ public class ListaCoresAdapter extends RecyclerView.Adapter<ListaCoresAdapter.Co
     private final List<Cor> cores;
     private final Context context;
 
+    private OnItemClickListener onItemClickListener;
+
     public ListaCoresAdapter(Context context) {
         this.context = context;
         this.cores = Cor.cores();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -33,7 +39,7 @@ public class ListaCoresAdapter extends RecyclerView.Adapter<ListaCoresAdapter.Co
 
     @Override
     public void onBindViewHolder(@NonNull CorViewHolder corViewHolder, int position) {
-        corViewHolder.mudaCor(cores.get(position));
+        corViewHolder.setaCor(cores.get(position));
     }
 
     @Override
@@ -44,13 +50,21 @@ public class ListaCoresAdapter extends RecyclerView.Adapter<ListaCoresAdapter.Co
     class CorViewHolder extends RecyclerView.ViewHolder{
 
         private final View circulo;
+        private Cor cor;
 
         public CorViewHolder(@NonNull View itemView) {
             super(itemView);
             circulo = itemView.findViewById(R.id.botao_cor_circulo);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(cor);
+                }
+            });
         }
 
-        public void mudaCor(Cor cor){
+        public void setaCor(Cor cor){
+            this.cor = cor;
             circulo.getBackground().setColorFilter(
                     Color.parseColor(cor.getCorSelecionada()),
                         PorterDuff.Mode.MULTIPLY);
@@ -59,6 +73,6 @@ public class ListaCoresAdapter extends RecyclerView.Adapter<ListaCoresAdapter.Co
 
     public interface OnItemClickListener{
 
-        void onItemClick();
+        void onItemClick(Cor cor);
     }
 }

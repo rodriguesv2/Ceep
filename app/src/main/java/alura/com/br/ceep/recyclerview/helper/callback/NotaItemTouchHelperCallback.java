@@ -23,7 +23,10 @@ public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+    public boolean onMove(@NonNull RecyclerView recyclerView,
+                          @NonNull RecyclerView.ViewHolder viewHolder,
+                          @NonNull RecyclerView.ViewHolder target) {
+
         int posicaoinicial = viewHolder.getAdapterPosition();
         int posicaoFinal = target.getAdapterPosition();
         trocaNotas(posicaoinicial, posicaoFinal);

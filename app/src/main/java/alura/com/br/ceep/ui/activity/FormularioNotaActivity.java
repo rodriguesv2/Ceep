@@ -2,7 +2,9 @@ package alura.com.br.ceep.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import alura.com.br.ceep.R;
 import alura.com.br.ceep.model.Nota;
 import alura.com.br.ceep.ui.recyclerview.adapter.ListaCoresAdapter;
+import alura.com.br.ceep.ui.recyclerview.adapter.util.Cor;
 
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_NOTA;
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_POSICAO;
@@ -23,6 +26,8 @@ public class FormularioNotaActivity extends AppCompatActivity {
     private int posicaoRecebida = POSICAO_INVALIDA;
     private TextView titulo;
     private TextView descricao;
+    private RecyclerView selecaoDeCor;
+    private ConstraintLayout fundo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +51,24 @@ public class FormularioNotaActivity extends AppCompatActivity {
     private void inicializaCampos() {
         titulo = findViewById(R.id.formulario_nota_titulo);
         descricao = findViewById(R.id.formulario_nota_descricao);
+        selecaoDeCor = findViewById(R.id.formulario_nota_selecao_cor);
+        fundo = findViewById(R.id.formulario_nota_fundo);
     }
 
     private void configuraRecyclerView() {
-        RecyclerView selecaoDeCor = findViewById(R.id.formulario_nota_selecao_cor);
-        selecaoDeCor.setAdapter(new ListaCoresAdapter(this));
+        ListaCoresAdapter adapter = new ListaCoresAdapter(this);
+        selecaoDeCor.setAdapter(adapter);
+
+        acaoDeCliqueNosBotoesDeCor(adapter);
+    }
+
+    private void acaoDeCliqueNosBotoesDeCor(ListaCoresAdapter adapter) {
+        adapter.setOnItemClickListener(new ListaCoresAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Cor cor) {
+                fundo.setBackgroundColor(Color.parseColor(cor.getCorSelecionada()));
+            }
+        });
     }
 
     private void preencheCampos(Nota notaRecebida) {
