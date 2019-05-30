@@ -4,9 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.widget.TextView;
 
-import alura.com.br.ceep.R;
 import alura.com.br.ceep.database.CeepDatabase;
 import alura.com.br.ceep.database.dao.NotaDAO;
 import alura.com.br.ceep.model.Nota;
@@ -33,10 +31,6 @@ public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public boolean onMove(@NonNull RecyclerView recyclerView,
                           @NonNull RecyclerView.ViewHolder viewHolderInicial,
                           @NonNull RecyclerView.ViewHolder viewHolderFinal) {
-
-//        int posicaoinicial = viewHolder.getAdapterPosition();
-//        int posicaoFinal = target.getAdapterPosition();
-
 
         adapter.troca(viewHolderInicial, viewHolderFinal);
         return true;

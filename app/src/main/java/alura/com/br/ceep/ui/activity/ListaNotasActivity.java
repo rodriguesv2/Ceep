@@ -17,8 +17,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import alura.com.br.ceep.R;
-import alura.com.br.ceep.dao.NotaDAO;
 import alura.com.br.ceep.database.CeepDatabase;
+import alura.com.br.ceep.database.dao.NotaDAO;
 import alura.com.br.ceep.model.Nota;
 import alura.com.br.ceep.preferences.RecycleViewLayoutPreferences;
 import alura.com.br.ceep.preferences.TipoRecycleViewEnum;
@@ -28,13 +28,12 @@ import alura.com.br.ceep.ui.recyclerview.adapter.ListaNotasAdapter;
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_NOTA;
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CODIGO_REQUISICAO_ALTERA_NOTA;
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CODIGO_REQUISICAO_INSERE_NOTA;
-import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.POSICAO_INVALIDA;
 
 public class ListaNotasActivity extends AppCompatActivity {
 
     private ListaNotasAdapter adapter;
     private RecyclerView listaNotas;
-    private alura.com.br.ceep.database.dao.NotaDAO dao;
+    private NotaDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,17 +163,12 @@ public class ListaNotasActivity extends AppCompatActivity {
         return resultCode == Activity.RESULT_OK;
     }
 
-    private boolean ehPosicaoValida(int posicaoRecebida) {
-        return posicaoRecebida > POSICAO_INVALIDA;
-    }
-
     private void altera(Nota nota) {
         adapter.altera(nota);
     }
 
     private void adiciona(Nota notaRecebida) {
         long id = dao.insere(notaRecebida);
-        //new NotaDAO().insere(notaRecebida);
         notaRecebida.setId(id);
         adapter.adiciona(notaRecebida);
     }
@@ -207,7 +201,6 @@ public class ListaNotasActivity extends AppCompatActivity {
     private void vaiParaFormularioNotaActivityAltera(Nota nota) {
         Intent abreFormularioComNota = new Intent(ListaNotasActivity.this, FormularioNotaActivity.class);
         abreFormularioComNota.putExtra(CHAVE_NOTA, nota);
-        //abreFormularioComNota.putExtra(CHAVE_POSICAO, nota.getPosicao());
         startActivityForResult(abreFormularioComNota, CODIGO_REQUISICAO_ALTERA_NOTA);
     }
     //Fim - Configuração do RecyclerView de notas

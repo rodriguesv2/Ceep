@@ -17,13 +17,10 @@ import alura.com.br.ceep.model.Nota;
 import alura.com.br.ceep.ui.recyclerview.adapter.ListaCoresAdapter;
 
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_NOTA;
-import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_POSICAO;
-import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.POSICAO_INVALIDA;
 
 public class FormularioNotaActivity extends AppCompatActivity {
 
     public static final String COR_DE_FUNDO = "cor";
-    //private int posicaoRecebida = POSICAO_INVALIDA;
     private TextView titulo;
     private TextView descricao;
     private RecyclerView selecaoDeCor;

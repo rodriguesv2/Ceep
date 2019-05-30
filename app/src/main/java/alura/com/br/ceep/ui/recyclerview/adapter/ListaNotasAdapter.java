@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Collections;
 import java.util.List;
 
 import alura.com.br.ceep.R;
@@ -100,22 +99,8 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         int posicaoInicial = viewHolderInicial.getAdapterPosition();
         int posicaoFinal = viewHolderFinal.getAdapterPosition();
 
-//        TextView tituloInicial = viewHolderInicial.itemView.findViewById(R.id.item_nota_titulo);
-//        TextView tituloFinal = viewHolderFinal.itemView.findViewById(R.id.item_nota_titulo);
-
-
         notas = trocaNoBanco(posicaoInicial, posicaoFinal);
-        //Collections.swap(notas, posicaoInicial, posicaoFinal);
-
-//        Nota notaInicial = notas.get(posicaoInicial);
-//        Nota notaFinal = notas.get(posicaoFinal);
-//
-//        tituloInicial.setText("id:"+notaInicial.getId()+" pos:" +notaInicial.getPosicao()+" "+notaInicial.getTitulo());
-//        tituloFinal.setText("id:"+notaFinal.getId()+" pos:" +notaFinal.getPosicao()+" "+notaFinal.getTitulo());
-
         notifyItemMoved(posicaoInicial, posicaoFinal);
-
-
     }
 
     private List<Nota> trocaNoBanco(int posicaoInicial, int posicaoFinal){
@@ -163,7 +148,7 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         }
 
         private void preencheCampo(Nota nota) {
-            titulo.setText("id:"+nota.getId()+" pos:" +nota.getPosicao()+" "+nota.getTitulo());
+            titulo.setText(nota.getTitulo());
             descricao.setText(nota.getDescricao());
         }
     }
