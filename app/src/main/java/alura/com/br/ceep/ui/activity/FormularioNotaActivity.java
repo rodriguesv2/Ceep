@@ -78,7 +78,6 @@ public class FormularioNotaActivity extends AppCompatActivity {
         if (dadosRecebidos.hasExtra(CHAVE_NOTA)){
             setTitle("Altera nota");
             notaRecebida = (Nota) dadosRecebidos.getSerializableExtra(CHAVE_NOTA);
-            //posicaoRecebida = dadosRecebidos.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
 
             corDeFundoInicial();
 
@@ -166,7 +165,6 @@ public class FormularioNotaActivity extends AppCompatActivity {
     private void retornaNota(Nota nota) {
         Intent resultadoInsercao = new Intent();
         resultadoInsercao.putExtra(CHAVE_NOTA, nota);
-        //resultadoInsercao.putExtra(CHAVE_POSICAO, posicaoRecebida);
         setResult(Activity.RESULT_OK, resultadoInsercao);
     }
     //Fim - Infla o botão e faz a logica de salvar a nota ao aperta-lo

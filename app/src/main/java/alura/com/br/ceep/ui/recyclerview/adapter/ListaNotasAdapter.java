@@ -21,7 +21,7 @@ import alura.com.br.ceep.model.Nota;
 
 public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.NotaViewHolder> {
 
-    private final List<Nota> notas;
+    private List<Nota> notas;
     private final Context context;
     private OnItemClickListener onItemClickListener;
     private NotaDAO dao;
@@ -71,8 +71,9 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         }
     }
 
-    public void altera(int posicao, Nota nota) {
-        notas.set(posicao, nota);
+    public void altera(Nota nota) {
+        dao.edita(nota);
+        notas.set(nota.getPosicao(), nota);
         notifyDataSetChanged();
     }
 
@@ -95,9 +96,39 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         }
     }
 
-    public void troca(int posicaoInicial, int posicaoFinal) {
-        Collections.swap(notas, posicaoInicial, posicaoFinal);
+    public void troca(RecyclerView.ViewHolder viewHolderInicial, RecyclerView.ViewHolder viewHolderFinal) {
+        int posicaoInicial = viewHolderInicial.getAdapterPosition();
+        int posicaoFinal = viewHolderFinal.getAdapterPosition();
+
+//        TextView tituloInicial = viewHolderInicial.itemView.findViewById(R.id.item_nota_titulo);
+//        TextView tituloFinal = viewHolderFinal.itemView.findViewById(R.id.item_nota_titulo);
+
+
+        notas = trocaNoBanco(posicaoInicial, posicaoFinal);
+        //Collections.swap(notas, posicaoInicial, posicaoFinal);
+
+//        Nota notaInicial = notas.get(posicaoInicial);
+//        Nota notaFinal = notas.get(posicaoFinal);
+//
+//        tituloInicial.setText("id:"+notaInicial.getId()+" pos:" +notaInicial.getPosicao()+" "+notaInicial.getTitulo());
+//        tituloFinal.setText("id:"+notaFinal.getId()+" pos:" +notaFinal.getPosicao()+" "+notaFinal.getTitulo());
+
         notifyItemMoved(posicaoInicial, posicaoFinal);
+
+
+    }
+
+    private List<Nota> trocaNoBanco(int posicaoInicial, int posicaoFinal){
+        Nota notaInicial = dao.pegaNotaPelaPosicao(posicaoInicial);
+        Nota notaFinal = dao.pegaNotaPelaPosicao(posicaoFinal);
+
+        notaInicial.setPosicao(posicaoFinal);
+        notaFinal.setPosicao(posicaoInicial);
+
+        dao.edita(notaInicial);
+        dao.edita(notaFinal);
+
+        return dao.todos();
     }
 
     class NotaViewHolder extends RecyclerView.ViewHolder {
@@ -116,7 +147,8 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClickListener.onItemClick(nota);
+                    Nota notaPersistida = dao.pegaNota((int) nota.getId());
+                    onItemClickListener.onItemClick(notaPersistida);
                 }
             });
         }
@@ -131,7 +163,7 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         }
 
         private void preencheCampo(Nota nota) {
-            titulo.setText(nota.getTitulo());
+            titulo.setText("id:"+nota.getId()+" pos:" +nota.getPosicao()+" "+nota.getTitulo());
             descricao.setText(nota.getDescricao());
         }
     }

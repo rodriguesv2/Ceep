@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -27,7 +26,6 @@ import alura.com.br.ceep.recyclerview.helper.callback.NotaItemTouchHelperCallbac
 import alura.com.br.ceep.ui.recyclerview.adapter.ListaNotasAdapter;
 
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_NOTA;
-import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_POSICAO;
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CODIGO_REQUISICAO_ALTERA_NOTA;
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CODIGO_REQUISICAO_INSERE_NOTA;
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.POSICAO_INVALIDA;
@@ -48,11 +46,10 @@ public class ListaNotasActivity extends AppCompatActivity {
 
         setTitle("Notas");
 
-        List<Nota> todasNotas = dao.todos();;
-        configuraRecyclerView(todasNotas);
-
+        configuraRecyclerView(dao.todos());
         configuraBotaoInsereNota();
     }
+
 
     //Inicio - Configuração do item menu de seleção de tipo de RecycleView
     @Override
@@ -63,8 +60,8 @@ public class ListaNotasActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_lista_notas_layout_item){
-            if (!ehPreferenciaLinear()){
+        if (item.getItemId() == R.id.menu_lista_notas_layout_item) {
+            if (!ehPreferenciaLinear()) {
                 setaLayoutLinear(item);
                 RecycleViewLayoutPreferences.inserePreferencia(TipoRecycleViewEnum.LINEAR, this);
             } else {
@@ -77,8 +74,8 @@ public class ListaNotasActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if (RecycleViewLayoutPreferences.contemChave(this)){
-            if (ehPreferenciaLinear()){
+        if (RecycleViewLayoutPreferences.contemChave(this)) {
+            if (ehPreferenciaLinear()) {
                 setaLayoutLinear(menu.getItem(0));
             } else {
                 setaLayoutGrid(menu.getItem(0));
@@ -125,30 +122,25 @@ public class ListaNotasActivity extends AppCompatActivity {
     //Inicio - Logica da nota retornada/criada pelo formulario
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(ehResultadoInsereNota(requestCode, data)){
-            if (resultadoOk(resultCode)){
+        if (ehResultadoInsereNota(requestCode, data)) {
+            if (resultadoOk(resultCode)) {
                 Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
                 adiciona(notaRecebida);
             }
         }
 
-        if(ehResultadoAlteraNota(requestCode, data)){
-            if (resultadoOk(resultCode)){
+        if (ehResultadoAlteraNota(requestCode, data)) {
+            if (resultadoOk(resultCode)) {
                 Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
-                int posicaoRecebida = data.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
 
-                if(ehPosicaoValida(posicaoRecebida)){
-                    altera(notaRecebida, posicaoRecebida);
-                } else {
-                    Toast.makeText(this, "Ocorreu um problema na alteração da nota", Toast.LENGTH_SHORT).show();
-                }
+                altera(notaRecebida);
             }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private boolean ehResultadoInsereNota(int requestCode,@Nullable Intent data) {
+    private boolean ehResultadoInsereNota(int requestCode, @Nullable Intent data) {
         return ehCodigoRequisicaoInsereNota(requestCode) && temNota(data);
     }
 
@@ -176,14 +168,14 @@ public class ListaNotasActivity extends AppCompatActivity {
         return posicaoRecebida > POSICAO_INVALIDA;
     }
 
-    private void altera(Nota nota, int posicao) {
-        new NotaDAO().altera(posicao, nota);
-        adapter.altera(posicao, nota);
+    private void altera(Nota nota) {
+        adapter.altera(nota);
     }
 
     private void adiciona(Nota notaRecebida) {
-        dao.insere(notaRecebida);
-        new NotaDAO().insere(notaRecebida);
+        long id = dao.insere(notaRecebida);
+        //new NotaDAO().insere(notaRecebida);
+        notaRecebida.setId(id);
         adapter.adiciona(notaRecebida);
     }
     //Fim - Logica da nota retornada/criada pelo formulario
