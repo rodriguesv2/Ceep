@@ -1,6 +1,7 @@
 package alura.com.br.ceep.model;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -13,9 +14,10 @@ public class Nota implements Serializable {
     private String titulo;
     private String descricao;
     private Cor cor;
-    private long posicao;
+    private int posicao;
 
-    public Nota(String titulo, String descricao, Cor cor, long posicao) {
+    @Ignore
+    public Nota(String titulo, String descricao, Cor cor, int posicao) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.cor = cor;
@@ -24,11 +26,11 @@ public class Nota implements Serializable {
 
     public Nota(){}
 
-    public long getPosicao() {
+    public int getPosicao() {
         return posicao;
     }
 
-    public void setPosicao(long posicao) {
+    public void setPosicao(int posicao) {
         this.posicao = posicao;
     }
 

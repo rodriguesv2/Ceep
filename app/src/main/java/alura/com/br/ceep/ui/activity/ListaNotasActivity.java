@@ -48,7 +48,7 @@ public class ListaNotasActivity extends AppCompatActivity {
 
         setTitle("Notas");
 
-        List<Nota> todasNotas = pegaTodasNotas();
+        List<Nota> todasNotas = dao.todos();;
         configuraRecyclerView(todasNotas);
 
         configuraBotaoInsereNota();
@@ -120,11 +120,6 @@ public class ListaNotasActivity extends AppCompatActivity {
         startActivityForResult(iniciaFormularioNota, CODIGO_REQUISICAO_INSERE_NOTA);
     }
     //Fim - Configuração do botão de inserir nota
-
-
-    private List<Nota> pegaTodasNotas() {
-        return dao.todos();
-    }
 
 
     //Inicio - Logica da nota retornada/criada pelo formulario
@@ -206,21 +201,21 @@ public class ListaNotasActivity extends AppCompatActivity {
         listaNotas.setAdapter(adapter);
         adapter.setOnItemClickListener(new ListaNotasAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Nota nota, int posicao) {
-                vaiParaFormularioNotaActivityAltera(nota, posicao);
+            public void onItemClick(Nota nota) {
+                vaiParaFormularioNotaActivityAltera(nota);
             }
         });
     }
 
     private void configuraItemTouchHelper(RecyclerView listaNotas) {
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter, this));
         itemTouchHelper.attachToRecyclerView(listaNotas);
     }
 
-    private void vaiParaFormularioNotaActivityAltera(Nota nota, int posicao) {
+    private void vaiParaFormularioNotaActivityAltera(Nota nota) {
         Intent abreFormularioComNota = new Intent(ListaNotasActivity.this, FormularioNotaActivity.class);
         abreFormularioComNota.putExtra(CHAVE_NOTA, nota);
-        abreFormularioComNota.putExtra(CHAVE_POSICAO, posicao);
+        //abreFormularioComNota.putExtra(CHAVE_POSICAO, nota.getPosicao());
         startActivityForResult(abreFormularioComNota, CODIGO_REQUISICAO_ALTERA_NOTA);
     }
     //Fim - Configuração do RecyclerView de notas

@@ -28,4 +28,7 @@ public interface NotaDAO {
 
     @Query("SELECT * FROM Nota WHERE id = :id")
     Nota pegaNota(int id);
+
+    @Query("SELECT * FROM Nota WHERE posicao = :posicao")
+    Nota pegaNotaPelaPosicao(int posicao);
 }

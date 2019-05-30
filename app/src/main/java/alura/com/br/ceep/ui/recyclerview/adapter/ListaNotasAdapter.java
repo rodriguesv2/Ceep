@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 
 import alura.com.br.ceep.R;
+import alura.com.br.ceep.database.CeepDatabase;
+import alura.com.br.ceep.database.dao.NotaDAO;
 import alura.com.br.ceep.model.Cor;
 import alura.com.br.ceep.model.Nota;
 
@@ -22,10 +24,13 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
     private final List<Nota> notas;
     private final Context context;
     private OnItemClickListener onItemClickListener;
+    private NotaDAO dao;
 
     public ListaNotasAdapter(Context context, List<Nota> notas) {
         this.notas = notas;
         this.context = context;
+
+        dao = CeepDatabase.getInstance(context).getNotaDao();
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -36,6 +41,7 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
     @Override
     public ListaNotasAdapter.NotaViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View viewCriada = LayoutInflater.from(context).inflate(R.layout.item_nota, viewGroup, false);
+
         return new NotaViewHolder(viewCriada);
     }
 
@@ -53,7 +59,16 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
 
     public void adiciona(Nota nota){
         notas.add(0, nota);
+        atualizarPosicoesAoAdicionar();
         notifyDataSetChanged();
+    }
+
+    private void atualizarPosicoesAoAdicionar(){
+        for (int i = 0; i < notas.size(); i++) {
+            Nota nota = notas.get(i);
+            nota.setPosicao(i);
+            dao.edita(nota);
+        }
     }
 
     public void altera(int posicao, Nota nota) {
@@ -61,9 +76,23 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         notifyDataSetChanged();
     }
 
-    public void remove(int posicaoDaNotaDeslizada) {
-        notas.remove(posicaoDaNotaDeslizada);
-        notifyItemRemoved(posicaoDaNotaDeslizada);
+    public void remove(Nota nota) {
+        int posicao = nota.getPosicao();
+
+        notas.remove(posicao);
+        dao.remove(nota);
+        atualizaPosicoesAoRemover(posicao);
+        notifyItemRemoved(posicao);
+    }
+
+    private void atualizaPosicoesAoRemover(int posicao){
+        for (int i = 0; i < notas.size(); i++) {
+            Nota nota = notas.get(i);
+            if (nota.getPosicao() > posicao){
+                nota.setPosicao(nota.getPosicao()-1);
+                dao.edita(nota);
+            }
+        }
     }
 
     public void troca(int posicaoInicial, int posicaoFinal) {
@@ -87,7 +116,7 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClickListener.onItemClick(nota, getAdapterPosition());
+                    onItemClickListener.onItemClick(nota);
                 }
             });
         }
@@ -109,6 +138,6 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
 
     public interface OnItemClickListener {
 
-        void onItemClick(Nota nota, int posicao);
+        void onItemClick(Nota nota);
     }
 }

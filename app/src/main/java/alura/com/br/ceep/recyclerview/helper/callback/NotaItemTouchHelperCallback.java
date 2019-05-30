@@ -1,18 +1,23 @@
 package alura.com.br.ceep.recyclerview.helper.callback;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 import alura.com.br.ceep.dao.NotaDAO;
+import alura.com.br.ceep.database.CeepDatabase;
+import alura.com.br.ceep.model.Nota;
 import alura.com.br.ceep.ui.recyclerview.adapter.ListaNotasAdapter;
 
 public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final ListaNotasAdapter adapter;
+    private alura.com.br.ceep.database.dao.NotaDAO dao;
 
-    public NotaItemTouchHelperCallback(ListaNotasAdapter adapter) {
+    public NotaItemTouchHelperCallback(ListaNotasAdapter adapter, Context context) {
         this.adapter = adapter;
+        dao = CeepDatabase.getInstance(context).getNotaDao();
     }
 
     @Override
@@ -45,7 +50,7 @@ public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     private void removeNota(int posicao) {
-        new NotaDAO().remove(posicao);
-        adapter.remove(posicao);
+        Nota nota = dao.pegaNotaPelaPosicao(posicao);
+        adapter.remove(nota);
     }
 }
