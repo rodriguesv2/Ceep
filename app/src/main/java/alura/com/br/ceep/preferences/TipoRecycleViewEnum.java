@@ -1,5 +1,5 @@
 package alura.com.br.ceep.preferences;
 
-public enum TipoRecycleViewPreferences {
+public enum TipoRecycleViewEnum {
     LINEAR, GRID
 }

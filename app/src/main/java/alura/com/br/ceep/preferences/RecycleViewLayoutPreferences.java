@@ -8,7 +8,7 @@ public abstract class RecycleViewLayoutPreferences {
     private static final String CHAVE_PREFERENCIA = "listaEscolhida";
     private static final String USER_PREFERENCES = "user_preferences";
 
-    public static void inserePreferencia(TipoRecycleViewPreferences valor, Context context) {
+    public static void inserePreferencia(TipoRecycleViewEnum valor, Context context) {
         SharedPreferences.Editor editor = getPreferences(context).edit();
         editor.putString(CHAVE_PREFERENCIA, valor.name());
         editor.commit();
@@ -18,9 +18,9 @@ public abstract class RecycleViewLayoutPreferences {
         return getPreferences(context).contains(CHAVE_PREFERENCIA);
     }
 
-    public static TipoRecycleViewPreferences pegaPreferencia(Context context) {
-        String tipoLista = getPreferences(context).getString(CHAVE_PREFERENCIA, TipoRecycleViewPreferences.LINEAR.name());
-        return TipoRecycleViewPreferences.valueOf(tipoLista);
+    public static TipoRecycleViewEnum pegaPreferencia(Context context) {
+        String tipoLista = getPreferences(context).getString(CHAVE_PREFERENCIA, TipoRecycleViewEnum.LINEAR.name());
+        return TipoRecycleViewEnum.valueOf(tipoLista);
     }
 
     private static SharedPreferences getPreferences(Context context) {

@@ -22,7 +22,7 @@ import alura.com.br.ceep.dao.NotaDAO;
 import alura.com.br.ceep.model.Cor;
 import alura.com.br.ceep.model.Nota;
 import alura.com.br.ceep.preferences.RecycleViewLayoutPreferences;
-import alura.com.br.ceep.preferences.TipoRecycleViewPreferences;
+import alura.com.br.ceep.preferences.TipoRecycleViewEnum;
 import alura.com.br.ceep.recyclerview.helper.callback.NotaItemTouchHelperCallback;
 import alura.com.br.ceep.ui.recyclerview.adapter.ListaNotasAdapter;
 
@@ -61,10 +61,10 @@ public class ListaNotasActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.menu_lista_notas_layout_item){
             if (!ehPreferenciaLinear()){
                 setaLayoutLinear(item);
-                RecycleViewLayoutPreferences.inserePreferencia(TipoRecycleViewPreferences.LINEAR, this);
+                RecycleViewLayoutPreferences.inserePreferencia(TipoRecycleViewEnum.LINEAR, this);
             } else {
                 setaLayoutGrid(item);
-                RecycleViewLayoutPreferences.inserePreferencia(TipoRecycleViewPreferences.GRID, this);
+                RecycleViewLayoutPreferences.inserePreferencia(TipoRecycleViewEnum.GRID, this);
             }
         }
         return super.onOptionsItemSelected(item);
@@ -83,7 +83,7 @@ public class ListaNotasActivity extends AppCompatActivity {
     }
 
     private boolean ehPreferenciaLinear() {
-        return RecycleViewLayoutPreferences.pegaPreferencia(this) == TipoRecycleViewPreferences.LINEAR;
+        return RecycleViewLayoutPreferences.pegaPreferencia(this) == TipoRecycleViewEnum.LINEAR;
     }
 
     private void setaLayoutLinear(MenuItem item) {
