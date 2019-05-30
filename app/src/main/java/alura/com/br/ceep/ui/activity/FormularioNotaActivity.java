@@ -30,6 +30,7 @@ public class FormularioNotaActivity extends AppCompatActivity {
     private ConstraintLayout fundo;
     private Nota notaRecebida;
     private Cor cor;
+    private Intent dadosRecebidos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +44,20 @@ public class FormularioNotaActivity extends AppCompatActivity {
         recebeNotaDaLista();
     }
 
+    private void inicializaCampos() {
+        titulo = findViewById(R.id.formulario_nota_titulo);
+        descricao = findViewById(R.id.formulario_nota_descricao);
+        selecaoDeCor = findViewById(R.id.formulario_nota_selecao_cor);
+        fundo = findViewById(R.id.formulario_nota_fundo);
+    }
+
+
+    //Inicio - Manter cor ao rotacionar a tela
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(COR_DE_FUNDO, cor);
         super.onSaveInstanceState(outState);
     }
-
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -61,9 +70,11 @@ public class FormularioNotaActivity extends AppCompatActivity {
             }
         }
     }
+    //Fim - Manter cor ao rotacionar a tela
+
 
     private void recebeNotaDaLista() {
-        Intent dadosRecebidos = getIntent();
+        dadosRecebidos = getIntent();
         if (dadosRecebidos.hasExtra(CHAVE_NOTA)){
             setTitle("Altera nota");
             notaRecebida = (Nota) dadosRecebidos.getSerializableExtra(CHAVE_NOTA);
@@ -78,6 +89,11 @@ public class FormularioNotaActivity extends AppCompatActivity {
         }
     }
 
+    private void preencheCampos() {
+        titulo.setText(notaRecebida.getTitulo());
+        descricao.setText(notaRecebida.getDescricao());
+    }
+
     private void corDeFundoInicial() {
         Cor corDaNotaRecebida = notaRecebida.getCor();
         if (corDaNotaRecebida.getCorSelecionada() != Cor.BRANCO){
@@ -88,13 +104,12 @@ public class FormularioNotaActivity extends AppCompatActivity {
         }
     }
 
-    private void inicializaCampos() {
-        titulo = findViewById(R.id.formulario_nota_titulo);
-        descricao = findViewById(R.id.formulario_nota_descricao);
-        selecaoDeCor = findViewById(R.id.formulario_nota_selecao_cor);
-        fundo = findViewById(R.id.formulario_nota_fundo);
+    private void mudarCorDeFundo(Cor cor) {
+        fundo.setBackgroundColor(Color.parseColor(cor.getCorSelecionada()));
     }
 
+
+    //Inicio - Configuração do RecycleView de cores
     private void configuraRecyclerView() {
         ListaCoresAdapter adapter = new ListaCoresAdapter(this);
         selecaoDeCor.setAdapter(adapter);
@@ -111,16 +126,10 @@ public class FormularioNotaActivity extends AppCompatActivity {
             }
         });
     }
+    //Fim - Configuração do RecycleView de cores
 
-    private void mudarCorDeFundo(Cor cor) {
-        fundo.setBackgroundColor(Color.parseColor(cor.getCorSelecionada()));
-    }
 
-    private void preencheCampos() {
-        titulo.setText(notaRecebida.getTitulo());
-        descricao.setText(notaRecebida.getDescricao());
-    }
-
+    //Inicio - Infla o botão e faz a logica de salvar a nota ao aperta-lo
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_formulario_nota_salva, menu);
@@ -142,7 +151,16 @@ public class FormularioNotaActivity extends AppCompatActivity {
     }
 
     private Nota criaNota() {
-        return new Nota(titulo.getText().toString(), descricao.getText().toString(), cor);
+        if (dadosRecebidos.hasExtra(CHAVE_NOTA)){
+            Nota notaAlterada = notaRecebida;
+            notaAlterada.setTitulo(titulo.getText().toString());
+            notaAlterada.setDescricao(descricao.getText().toString());
+            notaAlterada.setCor(cor);
+
+            return notaAlterada;
+        }
+
+        return new Nota(titulo.getText().toString(), descricao.getText().toString(), cor, 0);
     }
 
     private void retornaNota(Nota nota) {
@@ -151,4 +169,5 @@ public class FormularioNotaActivity extends AppCompatActivity {
         resultadoInsercao.putExtra(CHAVE_POSICAO, posicaoRecebida);
         setResult(Activity.RESULT_OK, resultadoInsercao);
     }
+    //Fim - Infla o botão e faz a logica de salvar a nota ao aperta-lo
 }

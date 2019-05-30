@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class Cor implements Serializable {
 
     public static final String AZUL = "#408EC9";
