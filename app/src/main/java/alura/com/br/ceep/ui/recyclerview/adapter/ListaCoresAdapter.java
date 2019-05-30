@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import alura.com.br.ceep.R;
-import alura.com.br.ceep.ui.recyclerview.adapter.util.Cor;
+import alura.com.br.ceep.model.Cor;
 
 public class ListaCoresAdapter extends RecyclerView.Adapter<ListaCoresAdapter.CorViewHolder> {
 

@@ -8,6 +8,7 @@
     android:layout_margin="5dp">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/item_nota_fundo"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -27,8 +28,8 @@
             android:id="@+id/item_nota_descricao"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:maxLines="6"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -1,7 +1,9 @@
 package alura.com.br.ceep.ui.recyclerview.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import alura.com.br.ceep.R;
+import alura.com.br.ceep.model.Cor;
 import alura.com.br.ceep.model.Nota;
 
 public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.NotaViewHolder> {
@@ -39,7 +42,7 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
     @Override
     public void onBindViewHolder(@NonNull NotaViewHolder viewHolder, int position) {
         Nota nota = notas.get(position);
-
+        viewHolder.mudarCor(nota.getCor());
         viewHolder.vincula(nota);
     }
 
@@ -73,11 +76,14 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         private final TextView titulo;
         private final TextView descricao;
         private Nota nota;
+        private final ConstraintLayout fundo;
 
         public NotaViewHolder(@NonNull View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.item_nota_titulo);
             descricao = itemView.findViewById(R.id.item_nota_descricao);
+            fundo = itemView.findViewById(R.id.item_nota_fundo);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,6 +95,10 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         public void vincula(Nota nota){
             this.nota = nota;
             preencheCampo(nota);
+        }
+
+        public void mudarCor(Cor cor){
+            fundo.setBackgroundColor(Color.parseColor(cor.getCorSelecionada()));
         }
 
         private void preencheCampo(Nota nota) {

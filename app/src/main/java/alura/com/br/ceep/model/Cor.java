@@ -1,4 +1,4 @@
-package alura.com.br.ceep.ui.recyclerview.adapter.util;
+package alura.com.br.ceep.model;
 
 import java.io.Serializable;
 import java.util.Arrays;

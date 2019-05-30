@@ -10,12 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import alura.com.br.ceep.R;
+import alura.com.br.ceep.model.Cor;
 import alura.com.br.ceep.model.Nota;
 import alura.com.br.ceep.ui.recyclerview.adapter.ListaCoresAdapter;
-import alura.com.br.ceep.ui.recyclerview.adapter.util.Cor;
 
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_NOTA;
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_POSICAO;
@@ -23,6 +22,7 @@ import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.POSICAO_INVA
 
 public class FormularioNotaActivity extends AppCompatActivity {
 
+    public static final String COR_DE_FUNDO = "cor";
     private int posicaoRecebida = POSICAO_INVALIDA;
     private TextView titulo;
     private TextView descricao;
@@ -34,30 +34,57 @@ public class FormularioNotaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_formulario_nota);
         setTitle("Insere nota");
 
         inicializaCampos();
         configuraRecyclerView();
+        recebeNotaDaLista();
+    }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(COR_DE_FUNDO, cor);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null){
+            Cor cor = (Cor) savedInstanceState.getSerializable(COR_DE_FUNDO);
+            if (cor != null) {
+                this.cor = cor;
+                mudarCorDeFundo(this.cor);
+            }
+        }
+    }
+
+    private void recebeNotaDaLista() {
         Intent dadosRecebidos = getIntent();
         if (dadosRecebidos.hasExtra(CHAVE_NOTA)){
             setTitle("Altera nota");
             notaRecebida = (Nota) dadosRecebidos.getSerializableExtra(CHAVE_NOTA);
             posicaoRecebida = dadosRecebidos.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
 
-            Cor corDaNotaRecebida = notaRecebida.getCor();
-            if (corDaNotaRecebida.getCorSelecionada() != Cor.BRANCO){
-                mudarCorDeFundo(corDaNotaRecebida);
-                this.cor = corDaNotaRecebida;
-            } else {
-                this.cor = new Cor(Cor.BRANCO);
-            }
+            corDeFundoInicial();
 
             preencheCampos();
         } else {
             notaRecebida = new Nota();
             cor = new Cor(Cor.BRANCO);
+        }
+    }
+
+    private void corDeFundoInicial() {
+        Cor corDaNotaRecebida = notaRecebida.getCor();
+        if (corDaNotaRecebida.getCorSelecionada() != Cor.BRANCO){
+            mudarCorDeFundo(corDaNotaRecebida);
+            this.cor = corDaNotaRecebida;
+        } else {
+            this.cor = new Cor(Cor.BRANCO);
         }
     }
 
@@ -105,7 +132,6 @@ public class FormularioNotaActivity extends AppCompatActivity {
         if(ehMenuSalvaNota(item)){
             Nota notaCriada = criaNota();
             retornaNota(notaCriada);
-            Toast.makeText(this, notaCriada.getCor().getCorSelecionada(), Toast.LENGTH_SHORT).show();
             finish();
         }
         return super.onOptionsItemSelected(item);

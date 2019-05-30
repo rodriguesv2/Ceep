@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,12 +19,12 @@ import java.util.List;
 
 import alura.com.br.ceep.R;
 import alura.com.br.ceep.dao.NotaDAO;
+import alura.com.br.ceep.model.Cor;
 import alura.com.br.ceep.model.Nota;
 import alura.com.br.ceep.preferences.RecycleViewLayoutPreferences;
 import alura.com.br.ceep.preferences.TipoRecycleViewPreferences;
 import alura.com.br.ceep.recyclerview.helper.callback.NotaItemTouchHelperCallback;
 import alura.com.br.ceep.ui.recyclerview.adapter.ListaNotasAdapter;
-import alura.com.br.ceep.ui.recyclerview.adapter.util.Cor;
 
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_NOTA;
 import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_POSICAO;

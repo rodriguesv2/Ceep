@@ -2,8 +2,6 @@ package alura.com.br.ceep.model;
 
 import java.io.Serializable;
 
-import alura.com.br.ceep.ui.recyclerview.adapter.util.Cor;
-
 public class Nota implements Serializable {
 
     private String titulo;
@@ -30,7 +28,4 @@ public class Nota implements Serializable {
         return cor;
     }
 
-    public void setCor(Cor cor) {
-        this.cor = cor;
-    }
 }
