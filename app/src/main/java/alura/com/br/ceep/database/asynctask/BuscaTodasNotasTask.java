@@ -6,13 +6,11 @@ import java.util.List;
 
 import alura.com.br.ceep.database.dao.NotaDAO;
 import alura.com.br.ceep.model.Nota;
-import alura.com.br.ceep.ui.recyclerview.adapter.ListaNotasAdapter;
 
 public class BuscaTodasNotasTask extends AsyncTask<Void, Void, List<Nota>> {
 
-    private NotaDAO dao;
-    private ListaNotasAdapter adapter;
-    private OnPostExecuteListener listener;
+    private final NotaDAO dao;
+    private final OnPostExecuteListener listener;
 
     public BuscaTodasNotasTask(NotaDAO dao, OnPostExecuteListener listener) {
         this.dao = dao;

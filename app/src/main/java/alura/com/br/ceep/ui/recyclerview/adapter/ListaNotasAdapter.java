@@ -27,7 +27,7 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
     private List<Nota> notas;
     private final Context context;
     private OnItemClickListener onItemClickListener;
-    private NotaDAO dao;
+    private final NotaDAO dao;
 
     public ListaNotasAdapter(Context context, List<Nota> notas) {
         this.notas = notas;
@@ -83,7 +83,7 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
     public void remove(final int posicao) {
         new RemoveNotaTask(dao, posicao, new RemoveNotaTask.OnPostExecuteListener() {
             @Override
-            public void posThread(Nota nota) {
+            public void posThread() {
                 notas.remove(posicao);
                 atualizaPosicoesAoRemover(posicao);
                 notifyItemRemoved(posicao);
@@ -118,7 +118,7 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         private Nota nota;
         private final ConstraintLayout fundo;
 
-        public NotaViewHolder(@NonNull View itemView) {
+        NotaViewHolder(@NonNull View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.item_nota_titulo);
             descricao = itemView.findViewById(R.id.item_nota_descricao);
@@ -141,12 +141,12 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
             }).execute();
         }
 
-        public void vincula(Nota nota){
+        void vincula(Nota nota){
             this.nota = nota;
             preencheCampo(nota);
         }
 
-        public void mudarCor(Cor cor){
+        void mudarCor(Cor cor){
             fundo.setBackgroundColor(Color.parseColor(cor.getCorSelecionada()));
         }
 

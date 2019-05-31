@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="alura.com.br.ceep">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="alura.com.br.ceep"
+    tools:ignore="GoogleAppIndexingWarning">
 
     <application
         android:allowBackup="true"
@@ -9,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        >
-        <activity android:name=".ui.activity.FeedbackActivity"></activity>
+        android:fullBackupContent="@xml/backup_descriptor">
+        <activity android:name=".ui.activity.FeedbackActivity"/>
         <activity android:name=".ui.activity.SplashScreenActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             >
@@ -21,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.FormularioNotaActivity" />
-        <activity android:name=".ui.activity.ListaNotasActivity"></activity>
+        <activity android:name=".ui.activity.ListaNotasActivity"/>
     </application>
 
 </manifest>

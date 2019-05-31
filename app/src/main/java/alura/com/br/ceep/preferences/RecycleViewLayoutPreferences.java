@@ -11,7 +11,7 @@ public abstract class RecycleViewLayoutPreferences {
     public static void inserePreferencia(TipoRecycleViewEnum valor, Context context) {
         SharedPreferences.Editor editor = getPreferences(context).edit();
         editor.putString(CHAVE_PREFERENCIA, valor.name());
-        editor.commit();
+        editor.apply();
     }
 
     public static boolean contemChave(Context context) {

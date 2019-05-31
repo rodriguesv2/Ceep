@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/menu_formulario_nota_ic_salva"
-        android:title="Salva nota"
+        android:title="@string/salva_nota"
         android:icon="@drawable/ic_action_salva_nota"
         app:showAsAction="always"/>
 </menu>

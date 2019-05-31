@@ -5,11 +5,11 @@ import android.os.AsyncTask;
 import alura.com.br.ceep.database.dao.NotaDAO;
 import alura.com.br.ceep.model.Nota;
 
-public class RemoveNotaTask extends AsyncTask<Void, Void, Nota> {
+public class RemoveNotaTask extends AsyncTask<Void, Void, Void> {
 
     private final NotaDAO dao;
     private final int posicao;
-    private OnPostExecuteListener listener;
+    private final OnPostExecuteListener listener;
 
     public RemoveNotaTask(NotaDAO dao, int posicao, OnPostExecuteListener listener) {
         this.dao = dao;
@@ -18,19 +18,20 @@ public class RemoveNotaTask extends AsyncTask<Void, Void, Nota> {
     }
 
     @Override
-    protected Nota doInBackground(Void... voids) {
+    protected Void doInBackground(Void... voids) {
         Nota nota = dao.pegaNotaPelaPosicao(posicao);
         dao.remove(nota);
-        return nota;
+        return null;
     }
 
+
     @Override
-    protected void onPostExecute(Nota nota) {
-        super.onPostExecute(nota);
-        listener.posThread(nota);
+    protected void onPostExecute(Void avoid) {
+        super.onPostExecute(avoid);
+        listener.posThread();
     }
 
     public interface OnPostExecuteListener{
-        void posThread(Nota nota);
+        void posThread();
     }
 }

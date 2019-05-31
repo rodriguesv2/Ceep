@@ -9,7 +9,7 @@ public class BuscaNotaTask extends AsyncTask<Void, Void, Nota> {
 
     private final NotaDAO dao;
     private final Nota nota;
-    private OnPostExecuteListener listener;
+    private final OnPostExecuteListener listener;
 
     public BuscaNotaTask(NotaDAO dao, Nota nota, OnPostExecuteListener listener) {
         this.dao = dao;

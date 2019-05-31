@@ -5,14 +5,14 @@
 
     <item
         android:id="@+id/menu_lista_notas_layout_item"
-        android:title="Layout da lista"
+        android:title="@string/layout_da_lista"
         android:icon="@drawable/ic_action_lista_grid"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         />
 
     <item
         android:id="@+id/menu_lista_notas_feedback"
-        android:title="Feedback"
+        android:title="@string/feedback"
         android:icon="@drawable/ic_action_feedback"
         app:showAsAction="always"
         />

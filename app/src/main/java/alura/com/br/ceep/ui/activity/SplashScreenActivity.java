@@ -10,7 +10,7 @@ import alura.com.br.ceep.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    public static final String CHAVE_SPLASH = "splash";
+    private static final String CHAVE_SPLASH = "splash";
     private int tempo = 500;
 
     @Override

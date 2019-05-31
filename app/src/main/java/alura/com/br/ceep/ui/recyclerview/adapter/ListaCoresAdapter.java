@@ -52,7 +52,7 @@ public class ListaCoresAdapter extends RecyclerView.Adapter<ListaCoresAdapter.Co
         private final View circulo;
         private Cor cor;
 
-        public CorViewHolder(@NonNull View itemView) {
+        CorViewHolder(@NonNull View itemView) {
             super(itemView);
             circulo = itemView.findViewById(R.id.botao_cor_circulo);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +63,7 @@ public class ListaCoresAdapter extends RecyclerView.Adapter<ListaCoresAdapter.Co
             });
         }
 
-        public void setaCor(Cor cor){
+        void setaCor(Cor cor){
             this.cor = cor;
             circulo.getBackground().setColorFilter(
                     Color.parseColor(cor.getCorSelecionada()),

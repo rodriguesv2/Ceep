@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import alura.com.br.ceep.R;
 import alura.com.br.ceep.model.Cor;
 import alura.com.br.ceep.model.Nota;
@@ -20,7 +22,7 @@ import static alura.com.br.ceep.ui.activity.NotasActivityConstantes.CHAVE_NOTA;
 
 public class FormularioNotaActivity extends AppCompatActivity {
 
-    public static final String COR_DE_FUNDO = "cor";
+    private static final String COR_DE_FUNDO = "cor";
     private TextView titulo;
     private TextView descricao;
     private RecyclerView selecaoDeCor;
@@ -92,7 +94,7 @@ public class FormularioNotaActivity extends AppCompatActivity {
 
     private void corDeFundoInicial() {
         Cor corDaNotaRecebida = notaRecebida.getCor();
-        if (corDaNotaRecebida.getCorSelecionada() != Cor.BRANCO){
+        if (!Objects.equals(corDaNotaRecebida.getCorSelecionada(), Cor.BRANCO)){
             mudarCorDeFundo(corDaNotaRecebida);
             this.cor = corDaNotaRecebida;
         } else {

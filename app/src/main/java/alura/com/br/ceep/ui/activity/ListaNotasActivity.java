@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Objects;
 
 import alura.com.br.ceep.R;
 import alura.com.br.ceep.database.CeepDatabase;
@@ -135,14 +136,14 @@ public class ListaNotasActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (ehResultadoInsereNota(requestCode, data)) {
             if (resultadoOk(resultCode)) {
-                Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
+                Nota notaRecebida = (Nota) Objects.requireNonNull(data).getSerializableExtra(CHAVE_NOTA);
                 adiciona(notaRecebida);
             }
         }
 
         if (ehResultadoAlteraNota(requestCode, data)) {
             if (resultadoOk(resultCode)) {
-                Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
+                Nota notaRecebida = (Nota) Objects.requireNonNull(data).getSerializableExtra(CHAVE_NOTA);
 
                 altera(notaRecebida);
             }
@@ -209,7 +210,7 @@ public class ListaNotasActivity extends AppCompatActivity {
     }
 
     private void configuraItemTouchHelper(RecyclerView listaNotas) {
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter, this));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter));
         itemTouchHelper.attachToRecyclerView(listaNotas);
     }
 

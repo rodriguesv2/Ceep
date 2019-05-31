@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
+@SuppressWarnings("WeakerAccess")
 public class Cor implements Serializable {
 
     public static final String AZUL = "#408EC9";
@@ -17,7 +18,7 @@ public class Cor implements Serializable {
     public static final String MARROM = "#A47C48";
     public static final String ROXO = "#BE29EC";
 
-    private String corSelecionada;
+    private final String corSelecionada;
 
     public Cor(String corSelecionada) {
         this.corSelecionada = corSelecionada;
@@ -28,7 +29,7 @@ public class Cor implements Serializable {
     }
 
     public static List<Cor> cores(){
-        List<Cor> cores = Arrays.asList(
+        return Arrays.asList(
                 new Cor(AZUL),
                 new Cor(BRANCO),
                 new Cor(VERMELHO),
@@ -39,7 +40,5 @@ public class Cor implements Serializable {
                 new Cor(MARROM),
                 new Cor(ROXO)
         );
-
-        return cores;
     }
 }

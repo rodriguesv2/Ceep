@@ -16,7 +16,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:hint="Titulo"
+        android:hint="@string/titulo"
         android:textSize="30sp"
         android:textStyle="bold"
         android:background="@android:color/transparent"
@@ -25,7 +25,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        android:inputType="text"
+        android:importantForAutofill="no"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/formulario_nota_descricao"
@@ -36,11 +39,14 @@
         android:background="@android:color/transparent"
         android:ems="10"
         android:gravity="top"
-        android:hint="Descrição"
+        android:hint="@string/descricao"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/formulario_nota_titulo"
         app:layout_constraintStart_toStartOf="@+id/formulario_nota_titulo"
-        app:layout_constraintTop_toBottomOf="@+id/formulario_nota_titulo" />
+        app:layout_constraintTop_toBottomOf="@+id/formulario_nota_titulo"
+        android:inputType="text"
+        android:importantForAutofill="no"
+        tools:targetApi="o"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/formulario_nota_selecao_cor"

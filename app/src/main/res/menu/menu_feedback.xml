@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/menu_feedback_enviar"
-        android:title="Enviar"
+        android:title="@string/enviar"
         android:icon="@drawable/ic_action_enviar"
         app:showAsAction="always"
         />
