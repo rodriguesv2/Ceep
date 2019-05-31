@@ -7,7 +7,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 import alura.com.br.ceep.database.CeepDatabase;
 import alura.com.br.ceep.database.dao.NotaDAO;
-import alura.com.br.ceep.model.Nota;
 import alura.com.br.ceep.ui.recyclerview.adapter.ListaNotasAdapter;
 
 public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
@@ -32,7 +31,10 @@ public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
                           @NonNull RecyclerView.ViewHolder viewHolderInicial,
                           @NonNull RecyclerView.ViewHolder viewHolderFinal) {
 
-        adapter.troca(viewHolderInicial, viewHolderFinal);
+        int posicaoInicial = viewHolderInicial.getAdapterPosition();
+        int posicaoFinal = viewHolderFinal.getAdapterPosition();
+
+        adapter.trocaNoBanco(posicaoInicial, posicaoFinal);
         return true;
     }
 
@@ -40,11 +42,6 @@ public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         int posicaoDaNotaDeslizada = viewHolder.getAdapterPosition();
-        removeNota(posicaoDaNotaDeslizada);
-    }
-
-    private void removeNota(int posicao) {
-        Nota nota = dao.pegaNotaPelaPosicao(posicao);
-        adapter.remove(nota);
+        adapter.remove(posicaoDaNotaDeslizada);
     }
 }

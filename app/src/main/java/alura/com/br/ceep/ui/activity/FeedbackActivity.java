@@ -1,11 +1,9 @@
 package alura.com.br.ceep.ui.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.zip.Inflater;
 
 import alura.com.br.ceep.R;
 

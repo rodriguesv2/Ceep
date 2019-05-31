@@ -14,6 +14,10 @@ import java.util.List;
 
 import alura.com.br.ceep.R;
 import alura.com.br.ceep.database.CeepDatabase;
+import alura.com.br.ceep.database.asynctask.BuscaNotaTask;
+import alura.com.br.ceep.database.asynctask.EditaNotaTask;
+import alura.com.br.ceep.database.asynctask.InvertePosicaoTask;
+import alura.com.br.ceep.database.asynctask.RemoveNotaTask;
 import alura.com.br.ceep.database.dao.NotaDAO;
 import alura.com.br.ceep.model.Cor;
 import alura.com.br.ceep.model.Nota;
@@ -66,23 +70,25 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
         for (int i = 0; i < notas.size(); i++) {
             Nota nota = notas.get(i);
             nota.setPosicao(i);
-            dao.edita(nota);
+            new EditaNotaTask(dao, nota).execute();
         }
     }
 
     public void altera(Nota nota) {
-        dao.edita(nota);
+        new EditaNotaTask(dao, nota).execute();
         notas.set(nota.getPosicao(), nota);
         notifyDataSetChanged();
     }
 
-    public void remove(Nota nota) {
-        int posicao = nota.getPosicao();
-
-        notas.remove(posicao);
-        dao.remove(nota);
-        atualizaPosicoesAoRemover(posicao);
-        notifyItemRemoved(posicao);
+    public void remove(final int posicao) {
+        new RemoveNotaTask(dao, posicao, new RemoveNotaTask.OnPostExecuteListener() {
+            @Override
+            public void posThread(Nota nota) {
+                notas.remove(posicao);
+                atualizaPosicoesAoRemover(posicao);
+                notifyItemRemoved(posicao);
+            }
+        }).execute();
     }
 
     private void atualizaPosicoesAoRemover(int posicao){
@@ -90,30 +96,19 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
             Nota nota = notas.get(i);
             if (nota.getPosicao() > posicao){
                 nota.setPosicao(nota.getPosicao()-1);
-                dao.edita(nota);
+                new EditaNotaTask(dao, nota).execute();
             }
         }
     }
 
-    public void troca(RecyclerView.ViewHolder viewHolderInicial, RecyclerView.ViewHolder viewHolderFinal) {
-        int posicaoInicial = viewHolderInicial.getAdapterPosition();
-        int posicaoFinal = viewHolderFinal.getAdapterPosition();
-
-        notas = trocaNoBanco(posicaoInicial, posicaoFinal);
-        notifyItemMoved(posicaoInicial, posicaoFinal);
-    }
-
-    private List<Nota> trocaNoBanco(int posicaoInicial, int posicaoFinal){
-        Nota notaInicial = dao.pegaNotaPelaPosicao(posicaoInicial);
-        Nota notaFinal = dao.pegaNotaPelaPosicao(posicaoFinal);
-
-        notaInicial.setPosicao(posicaoFinal);
-        notaFinal.setPosicao(posicaoInicial);
-
-        dao.edita(notaInicial);
-        dao.edita(notaFinal);
-
-        return dao.todos();
+    public void trocaNoBanco(int posicaoInicial, int posicaoFinal){
+        new InvertePosicaoTask(dao, posicaoInicial, posicaoFinal, new InvertePosicaoTask.OnPostExecuteListener() {
+            @Override
+            public void posThread(List<Nota> todasNotas, int posicaoInicial, int posicaoFinal) {
+                notas = todasNotas;
+                notifyItemMoved(posicaoInicial, posicaoFinal);
+            }
+        }).execute();
     }
 
     class NotaViewHolder extends RecyclerView.ViewHolder {
@@ -132,10 +127,18 @@ public class ListaNotasAdapter extends RecyclerView.Adapter<ListaNotasAdapter.No
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Nota notaPersistida = dao.pegaNota((int) nota.getId());
-                    onItemClickListener.onItemClick(notaPersistida);
+                    buscaNotaNoBancoEDisparaListenerDeClique();
                 }
             });
+        }
+
+        private void buscaNotaNoBancoEDisparaListenerDeClique() {
+            new BuscaNotaTask(dao, nota, new BuscaNotaTask.OnPostExecuteListener() {
+                @Override
+                public void posThread(Nota notaPersistida) {
+                    onItemClickListener.onItemClick(notaPersistida);
+                }
+            }).execute();
         }
 
         public void vincula(Nota nota){

@@ -18,6 +18,8 @@ import java.util.List;
 
 import alura.com.br.ceep.R;
 import alura.com.br.ceep.database.CeepDatabase;
+import alura.com.br.ceep.database.asynctask.AdicionaNotaTask;
+import alura.com.br.ceep.database.asynctask.BuscaTodasNotasTask;
 import alura.com.br.ceep.database.dao.NotaDAO;
 import alura.com.br.ceep.model.Nota;
 import alura.com.br.ceep.preferences.RecycleViewLayoutPreferences;
@@ -45,7 +47,15 @@ public class ListaNotasActivity extends AppCompatActivity {
 
         setTitle("Notas");
 
-        configuraRecyclerView(dao.todos());
+        listaNotas = findViewById(R.id.lista_notas_recyclerview);
+
+        new BuscaTodasNotasTask(dao, new BuscaTodasNotasTask.OnPostExecuteListener() {
+            @Override
+            public void posThread(List<Nota> notas) {
+                configuraRecyclerView(notas);
+            }
+        }).execute();
+
         configuraBotaoInsereNota();
     }
 
@@ -67,7 +77,7 @@ public class ListaNotasActivity extends AppCompatActivity {
                 setaLayoutGrid(item);
                 RecycleViewLayoutPreferences.inserePreferencia(TipoRecycleViewEnum.GRID, this);
             }
-        } else {
+        } else {//Se for o item de feedback a ser clicado
             startActivity(new Intent(this, FeedbackActivity.class));
         }
         return super.onOptionsItemSelected(item);
@@ -169,17 +179,20 @@ public class ListaNotasActivity extends AppCompatActivity {
         adapter.altera(nota);
     }
 
-    private void adiciona(Nota notaRecebida) {
-        long id = dao.insere(notaRecebida);
-        notaRecebida.setId(id);
-        adapter.adiciona(notaRecebida);
+    private void adiciona(final Nota notaRecebida) {
+        new AdicionaNotaTask(dao, notaRecebida, new AdicionaNotaTask.OnPostExecuteListener() {
+            @Override
+            public void posThread(long id) {
+                notaRecebida.setId(id);
+                adapter.adiciona(notaRecebida);
+            }
+        }).execute();
     }
     //Fim - Logica da nota retornada/criada pelo formulario
 
 
     //Inicio - Configuração do RecyclerView de notas
     private void configuraRecyclerView(List<Nota> todasNotas) {
-        listaNotas = findViewById(R.id.lista_notas_recyclerview);
         configuraAdapter(todasNotas, listaNotas);
         configuraItemTouchHelper(listaNotas);
     }

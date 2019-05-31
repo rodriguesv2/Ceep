@@ -19,7 +19,6 @@ public abstract class CeepDatabase extends RoomDatabase {
     public static CeepDatabase getInstance(Context context){
         return Room
                 .databaseBuilder(context, CeepDatabase.class, "ceep.db")
-                .allowMainThreadQueries()
                 .build();
     }
 

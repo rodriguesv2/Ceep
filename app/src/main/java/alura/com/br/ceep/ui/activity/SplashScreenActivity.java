@@ -1,14 +1,14 @@
 package alura.com.br.ceep.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 
 import alura.com.br.ceep.R;
 
-public class SplashScreenActivity extends Activity {
+public class SplashScreenActivity extends AppCompatActivity {
 
     public static final String CHAVE_SPLASH = "splash";
     private int tempo = 500;
