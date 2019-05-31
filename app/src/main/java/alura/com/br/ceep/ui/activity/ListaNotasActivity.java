@@ -50,7 +50,7 @@ public class ListaNotasActivity extends AppCompatActivity {
     }
 
 
-    //Inicio - Configuração do item menu de seleção de tipo de RecycleView
+    //Inicio - Configuração do item menu de seleção de tipo de RecycleView e para ir ao feedback
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_lista_notas_layout, menu);
@@ -67,6 +67,8 @@ public class ListaNotasActivity extends AppCompatActivity {
                 setaLayoutGrid(item);
                 RecycleViewLayoutPreferences.inserePreferencia(TipoRecycleViewEnum.GRID, this);
             }
+        } else {
+            startActivity(new Intent(this, FeedbackActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -97,7 +99,7 @@ public class ListaNotasActivity extends AppCompatActivity {
                 StaggeredGridLayoutManager.VERTICAL));
         item.setIcon(R.drawable.ic_action_lista_linear);
     }
-    //Fim - Configuração do item menu de seleção de tipo de RecycleView
+    //Fim - Configuração do item menu de seleção de tipo de RecycleView e para ir ao feedback
 
 
     //Inicio - Configuração do botão de inserir nota
